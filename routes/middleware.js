@@ -1,12 +1,24 @@
-// const requestTime = async (req, res, next) => {
-//   console.log(`${req.method} ${req.url} at ${new Date()}`);
-//   next();
-// }
+const tokenDAO = require('../daos/token');
 
-// const tellMeMore = async (req, res, next) => {
-//   console.log('tell me more, tell me more');
-//   next();
-// }
+const isAuthorized = async (req, res, next) => {
+  const { authorization } = req.headers
+  if (authorization) {
+    const token = authorization.split(' ')[1];
+    if (token) {
+      try {
+        const user = await tokenDAO.getUserFromToken(token)
+        req.user = user;
+        next();
+      } catch(e) {
+        res.sendStatus(401);
+      }
+    } else {
+      res.sendStatus(401);
+    }
+  } else {
+    res.sendStatus(401);
+  }
+}
 
 const emailAndPassword = async (req, res, next) => {
   const { email, password } = req.body
@@ -16,7 +28,5 @@ const emailAndPassword = async (req, res, next) => {
     next();
   }
 }
-
-// exports.requestTime = requestTime;
-// exports.tellMeMore = tellMeMore;
+exports.isAuthorized = isAuthorized;
 exports.emailAndPassword = emailAndPassword;
