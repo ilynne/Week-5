@@ -20,6 +20,15 @@ const isAuthorized = async (req, res, next) => {
   }
 }
 
+const passwordPresent = async (req, res, next) => {
+  const { password } = req.body
+  if (!password) {
+    res.status(400).send('password is required')
+  } else {
+    next();
+  }
+}
+
 const emailAndPassword = async (req, res, next) => {
   const { email, password } = req.body
   if (!email || !password) {
@@ -29,4 +38,5 @@ const emailAndPassword = async (req, res, next) => {
   }
 }
 exports.isAuthorized = isAuthorized;
+exports.passwordPresent = passwordPresent;
 exports.emailAndPassword = emailAndPassword;
