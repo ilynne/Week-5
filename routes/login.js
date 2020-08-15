@@ -1,15 +1,8 @@
 
 const { Router } = require("express");
 const router = Router();
+const { emailAndPassword } = require("./middleware.js")
 
-const emailAndPassword = async (req, res, next) => {
-  const { email, password } = req.body
-  if (!email || !password) {
-    res.status(400).send('email and password are required')
-  } else {
-    next();
-  }
-}
 // Logout
 router.post("/logout", async (req, res, next) => {
   res.sendStatus(404);
@@ -37,11 +30,12 @@ router.post("/", emailAndPassword, async (req, res, next) => {
 
 // errors
 router.use(async (error, req, res, next) => {
-  if (error instanceof userDAO.BadDataError) {
-    res.status(409).send(error.message);
-  } else {
-    res.status(500).send('something went wrong');
-  }
+  res.status(500).send('something went wrong');
+  // if (error instanceof userDAO.BadDataError) {
+  //   res.status(409).send(error.message);
+  // } else {
+  //   res.status(500).send('something went wrong');
+  // }
 });
 
 module.exports = router;
