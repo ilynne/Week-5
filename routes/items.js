@@ -9,7 +9,6 @@ router.put("/:id", isAuthorized, isAdmin, async (req, res, next) => {
   const { title, price } = req.body;
   try {
     data = { title: title, price: price }
-    console.log(id)
     const item = await itemDao.updateItem(id, data);
     res.json(item);
   } catch(e) {

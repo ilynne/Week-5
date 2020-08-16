@@ -6,12 +6,6 @@ const { isAuthorized, passwordPresent, emailAndPassword } = require("./middlewar
 const userDAO = require('../daos/user');
 const tokenDAO = require('../daos/token')
 
-// maybe delete this route -- we don't need it
-// Logout
-router.post("/logout", async (req, res, next) => {
-  res.sendStatus(404);
-})
-
 // Password
 router.post("/password", isAuthorized, passwordPresent, async (req, res, next) => {
   const { user } = req;
