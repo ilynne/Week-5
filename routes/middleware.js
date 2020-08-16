@@ -20,6 +20,15 @@ const isAuthorized = async (req, res, next) => {
   }
 }
 
+const isAdmin = async (req, res, next) => {
+  const { user } = req;
+  if (user.roles.includes('admin')) {
+    next();
+  } else {
+    res.sendStatus(403);
+  }
+}
+
 const passwordPresent = async (req, res, next) => {
   const { password } = req.body
   if (!password) {
@@ -38,5 +47,6 @@ const emailAndPassword = async (req, res, next) => {
   }
 }
 exports.isAuthorized = isAuthorized;
+exports.isAdmin = isAdmin;
 exports.passwordPresent = passwordPresent;
 exports.emailAndPassword = emailAndPassword;
